@@ -16,6 +16,9 @@
     "url": "https://github.com/vaziliybober/frontend-project-lvl2/issues"
   },
   "homepage": "https://github.com/vaziliybober/frontend-project-lvl2#readme",
+  "bin": {
+    "gendiff": "./bin/gendiff.js"
+  },
   "dependencies": {
     "commander": "^6.1.0"
   }
