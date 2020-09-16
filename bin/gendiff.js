@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import program from 'commander';
-import gendiff from '../src/index.js';
+import genDiff from '../src/index.js';
 
 program
   .version('0.0.1')
@@ -12,6 +12,6 @@ program
   .arguments('<filepath1> <filepath2>');
 
 program
-  .action(gendiff);
+  .action(genDiff);
 
 program.parse(process.argv);
