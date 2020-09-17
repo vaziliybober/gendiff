@@ -21,7 +21,8 @@
     "gendiff": "./bin/gendiff.js"
   },
   "dependencies": {
-    "commander": "^6.1.0"
+    "commander": "^6.1.0",
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
