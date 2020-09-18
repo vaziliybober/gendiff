@@ -1,19 +1,7 @@
-import genDiff from '../src/main.js';
+import { resolve as resolvePath } from 'path';
+import genDiff from '../src/index.js';
 
 test('genDiff', () => {
-  const json1 = {
-    host: 'hexlet.io',
-    timeout: 50,
-    proxy: '123.234.53.22',
-    follow: false,
-  };
-
-  const json2 = {
-    timeout: 20,
-    verbose: true,
-    host: 'hexlet.io',
-  };
-
   const result = '{\n'
     + '  - follow: false\n'
     + '    host: hexlet.io\n'
@@ -23,6 +11,5 @@ test('genDiff', () => {
     + '  + verbose: true\n'
     + '}';
 
-  expect(genDiff(json1, json2)).toBe(result);
-  expect(genDiff({}, {})).toBe('{\n}');
+  expect(genDiff('__fixtures__/file1', resolvePath(process.cwd(), '__fixtures__/file2'))).toBe(result);
 });
