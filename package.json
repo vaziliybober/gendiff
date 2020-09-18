@@ -1,17 +1,17 @@
 {
   "name": "@vaziliybober/gendiff",
   "version": "1.0.0",
-  "description": "",
+  "description": "Diff generator",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx -n --experimental-vm-modules jest"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vaziliybober/frontend-project-lvl2.git"
   },
-  "author": "",
+  "author": "Vasiliy Bobrov",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/vaziliybober/frontend-project-lvl2/issues"
@@ -20,16 +20,19 @@
   "bin": {
     "gendiff": "./bin/gendiff.js"
   },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {}
+  },
   "dependencies": {
-    "commander": "^6.1.0"
+    "commander": "^6.1.0",
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/preset-env": "^7.11.5",
-    "babel-jest": "^26.3.0",
     "eslint": "^7.9.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^24.0.1",
     "jest": "^26.4.2"
   }
 }
