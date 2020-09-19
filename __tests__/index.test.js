@@ -11,5 +11,5 @@ test('genDiff', () => {
     + '  + verbose: true\n'
     + '}';
 
-  expect(genDiff('__fixtures__/file1', resolvePath(process.cwd(), '__fixtures__/file2'))).toBe(result);
+  expect(genDiff('__fixtures__/json-flat-1', resolvePath(process.cwd(), '__fixtures__/json-flat-2'))).toBe(result);
 });
