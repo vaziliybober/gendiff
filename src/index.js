@@ -15,8 +15,8 @@ const genDiff = (filepath1, filepath2) => {
   let content1; let
     content2;
   try {
-    content1 = readFileSync(filepath1);
-    content2 = readFileSync(filepath2);
+    content1 = readFileSync(filepath1).toString();
+    content2 = readFileSync(filepath2).toString();
   } catch (e) {
     return e;
   }

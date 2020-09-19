@@ -26,3 +26,16 @@ test('flat yaml', () => {
 
   expect(genDiff('__fixtures__/yaml-flat-1.yml', resolvePath(process.cwd(), '__fixtures__/yaml-flat-2.yml'))).toBe(result);
 });
+
+test('flat ini', () => {
+  const result = '{\n'
+    + '  - follow: false\n'
+    + '    host: hexlet.io\n'
+    + '  - proxy: 123.234.53.22\n'
+    + '  - timeout: 50\n'
+    + '  + timeout: 20\n'
+    + '  + verbose: true\n'
+    + '}';
+
+  expect(genDiff('__fixtures__/ini-flat-1.ini', resolvePath(process.cwd(), '__fixtures__/ini-flat-2.ini'))).toBe(result);
+});
