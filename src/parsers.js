@@ -1,5 +1,6 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
+
 const getParser = (extension) => {
   switch (extension) {
     case '.json':
