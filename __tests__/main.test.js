@@ -1,28 +1,70 @@
-import genDiff from '../src/main.js';
+import { genDiff } from '../src/main.js';
 
-test('genDiff JSON to string', () => {
-  const json1 = {
-    host: 'hexlet.io',
-    timeout: 50,
-    proxy: '123.234.53.22',
-    follow: false,
+test('genDiff test', () => {
+  const obj1 = {
+    name: 'vasya',
+    mail: {
+      email: 'vaziliybober@gmail.com',
+      index: 1008228,
+    },
+    dog: 'Terra',
+    university: 'HSE',
   };
 
-  const json2 = {
-    timeout: 20,
-    verbose: true,
-    host: 'hexlet.io',
+  const obj2 = {
+    name: {
+      firstname: 'petya',
+      secondname: 'bomjev',
+    },
+    mail: {
+      email: 'petya@mail.ru',
+      index: 1008228,
+    },
+    cat: 'Mur',
+    university: 'HSE',
   };
 
-  const result = '{\n'
-    + '  - follow: false\n'
-    + '    host: hexlet.io\n'
-    + '  - proxy: 123.234.53.22\n'
-    + '  - timeout: 50\n'
-    + '  + timeout: 20\n'
-    + '  + verbose: true\n'
-    + '}';
+  const diff = {
+    name: {
+      status: 'modified',
+      valueBefore: 'vasya',
+      valueAfter: {
+        firstname: 'petya',
+        secondname: 'bomjev',
+      },
+    },
 
-  expect(genDiff(json1, json2)).toBe(result);
-  expect(genDiff({}, {})).toBe('{\n}');
+    mail: {
+      status: 'unknown',
+      value: {
+        email: {
+          status: 'modified',
+          valueBefore: 'vaziliybober@gmail.com',
+          valueAfter: 'petya@mail.ru',
+        },
+        index: {
+          status: 'unchanged',
+          value: 1008228,
+        },
+      },
+    },
+
+    dog: {
+      status: 'removed',
+      value: 'Terra',
+    },
+
+    cat: {
+      status: 'added',
+      value: 'Mur',
+    },
+
+    university: {
+      status: 'unchanged',
+      value: 'HSE',
+    },
+  };
+
+  const actual = genDiff(obj1, obj2);
+  expect(actual).toEqual(diff);
 });

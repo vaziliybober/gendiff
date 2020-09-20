@@ -1,8 +1,9 @@
-import { resolve as resolvePath } from 'path';
-import genDiff from '../src/index.js';
+/* eslint-disable no-underscore-dangle */
 
-import { fileURLToPath, pathToFileURL } from 'url';
+import { fileURLToPath } from 'url';
 import path from 'path';
+import fs from 'fs';
+import genDiff from '../src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,7 +20,8 @@ test('flat json', () => {
     + '  + verbose: true\n'
     + '}';
 
-  expect(genDiff(getFixturePath('json-flat-1.json'), getFixturePath('json-flat-2.json'))).toBe(result);
+  const actual = genDiff(getFixturePath('json-flat-1.json'), getFixturePath('json-flat-2.json'));
+  expect(actual).toBe(result);
 });
 
 test('flat yaml', () => {
@@ -46,4 +48,21 @@ test('flat ini', () => {
     + '}';
 
   expect(genDiff(getFixturePath('ini-flat-1.ini'), getFixturePath('ini-flat-2.ini'))).toBe(result);
+});
+
+test('nested json', () => {
+  const result = fs.readFileSync(getFixturePath('result-nested')).toString();
+  const actual = genDiff(getFixturePath('json-nested-1.json'), getFixturePath('json-nested-2.json'));
+  expect(actual).toBe(result);
+});
+
+test('nested yaml', () => {
+  const result = fs.readFileSync(getFixturePath('result-nested')).toString();
+  expect(genDiff(getFixturePath('yaml-nested-1.yml'), getFixturePath('yaml-nested-2.yml'))).toBe(result);
+});
+
+test('nested ini', () => {
+  const result = fs.readFileSync(getFixturePath('result-nested')).toString();
+  const actual = genDiff(getFixturePath('ini-nested-1.ini'), getFixturePath('ini-nested-2.ini'));
+  expect(actual).toBe(result);
 });

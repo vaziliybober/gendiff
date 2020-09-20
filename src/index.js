@@ -1,6 +1,6 @@
 import { readFileSync, existsSync } from 'fs';
 import path from 'path';
-import genDiffObj from './main.js';
+import { genDiff as genDiffObj, formatDiff } from './main.js';
 import getParser from './parsers.js';
 
 const genDiff = (filepath1, filepath2) => {
@@ -43,7 +43,7 @@ const genDiff = (filepath1, filepath2) => {
     return e;
   }
 
-  return genDiffObj(struct1, struct2);
+  return formatDiff(genDiffObj(struct1, struct2));
 };
 
 export default genDiff;
