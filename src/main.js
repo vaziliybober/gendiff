@@ -25,7 +25,8 @@ export const genDiff = (obj1, obj2) => {
       }];
     }
 
-    const unknown = _.isObject(obj1[key]) && _.isObject(obj2[key]);
+    const unknown = _.isObject(obj1[key]) && _.isObject(obj2[key])
+    && !_.isArray(obj1[key]) && !_.isArray(obj2[key]);
 
     if (unknown) {
       return [key, {
@@ -61,6 +62,9 @@ export const formatDiff = (diffObj) => {
 
     const strings = Object.keys(diff).sort().map((key) => {
       if (!specialFormatting) {
+        if (_.isArray(diff)) {
+          return `${keySpacing}  ${iter(diff[key], `${spacing}    `, false)}`;
+        }
         return `${keySpacing}  ${key}: ${iter(diff[key], `${spacing}    `, false)}`;
       }
 
@@ -88,6 +92,9 @@ export const formatDiff = (diffObj) => {
       return `${keySpacing}  ${key}: ${iter(value, `${spacing}    `, false)}`;
     });
 
+    if (_.isArray(diff)) {
+      return `[\n${strings.join('\n')}\n${spacing}]`;
+    }
     return `{\n${strings.join('\n')}\n${spacing}}`;
   };
 
