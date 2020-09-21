@@ -31,6 +31,5 @@ test('nested ini', () => {
 test('with arrays', () => {
   const expected = fs.readFileSync(getFixturePath('result-arrays')).toString();
   const actual = genDiff(getFixturePath('json-with-arrays-1.json'), getFixturePath('json-with-arrays-2.json'));
-  console.log(actual);
   expect(actual).toBe(expected);
 });

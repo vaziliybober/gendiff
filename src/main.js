@@ -1,55 +1,55 @@
 import _ from 'lodash';
 
+const isObjectNotArray = (value) => _.isObject(value) && !_.isArray(value);
+
 export const genDiff = (obj1, obj2) => {
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
   const allKeys = _.union(keys1, keys2);
 
-  return Object.fromEntries(allKeys.map((key) => {
+  const reducer = (acc, key) => {
     const isKey1 = keys1.includes(key);
     const isKey2 = keys2.includes(key);
 
-    const added = !isKey1 && isKey2;
-    const removed = isKey1 && !isKey2;
+    const value1 = obj1[key];
+    const value2 = obj2[key];
 
-    if (added) {
-      return [key, {
+    if (!isKey1 && isKey2) {
+      return {...acc, [key]: {
         status: 'added',
-        value: _.cloneDeep(obj2[key]),
-      }];
+        value: _.cloneDeep(value2)
+      }};
     }
-    if (removed) {
-      return [key, {
+
+    if (isKey1 && !isKey2) {
+      return {...acc, [key]: {
         status: 'removed',
-        value: _.cloneDeep(obj1[key]),
-      }];
+        value: _.cloneDeep(value1)
+      }};
     }
 
-    const unknown = _.isObject(obj1[key]) && _.isObject(obj2[key])
-    && !_.isArray(obj1[key]) && !_.isArray(obj2[key]);
-
-    if (unknown) {
-      return [key, {
+    if (isObjectNotArray(value1) && isObjectNotArray(value2)) {
+      return {...acc, [key]: {
         status: 'unknown',
-        value: genDiff(obj1[key], obj2[key]),
-      }];
+        value: genDiff(obj1[key], obj2[key])
+      }};
     }
 
-    const unchanged = _.isEqual(obj1[key], obj2[key]);
-
-    if (unchanged) {
-      return [key, {
+    if (_.isEqual(value1, value2)) {
+      return {...acc, [key]: {
         status: 'unchanged',
-        value: _.cloneDeep(obj1[key]),
-      }];
+        value: _.cloneDeep(value1)
+      }};
     }
 
-    return [key, {
+    return {...acc, [key]: {
       status: 'modified',
-      valueBefore: _.cloneDeep(obj1[key]),
-      valueAfter: _.cloneDeep(obj2[key]),
-    }];
-  }));
+      valueBefore: _.cloneDeep(value1),
+      valueAfter: _.cloneDeep(value2),
+    }};
+  }
+
+  return allKeys.reduce(reducer, {});
 };
 
 export const formatDiff = (diffObj) => {
