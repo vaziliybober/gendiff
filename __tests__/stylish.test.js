@@ -8,7 +8,7 @@ import genDiff from '../src/index.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
+const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', 'stylish', filename);
 
 test('nested json', () => {
   const expected = fs.readFileSync(getFixturePath('result-nested')).toString();
@@ -31,5 +31,11 @@ test('nested ini', () => {
 test('with arrays', () => {
   const expected = fs.readFileSync(getFixturePath('result-arrays')).toString();
   const actual = genDiff(getFixturePath('json-with-arrays-1.json'), getFixturePath('json-with-arrays-2.json'));
+  expect(actual).toBe(expected);
+});
+
+test('border case', () => {
+  const expected = fs.readFileSync(getFixturePath('result-border-case')).toString();
+  const actual = genDiff(getFixturePath('json-border-case-1.json'), getFixturePath('json-border-case-2.json'));
   expect(actual).toBe(expected);
 });

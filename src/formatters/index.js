@@ -1,7 +1,10 @@
-import stylish from './formatters/stylish.js';
+import stylish from './stylish.js';
+import plain from './plain.js';
 
 const getFormatter = (name) => {
   switch (name) {
+    case 'plain':
+      return plain;
     default:
       return stylish;
   }
