@@ -1,10 +1,10 @@
 import { readFileSync, existsSync } from 'fs';
 import path from 'path';
 import genDiffObj from './main.js';
-import formatDiff from './formatter.js';
+import getFormatter from './formatters.js';
 import getParser from './parsers.js';
 
-const genDiff = (filepath1, filepath2) => {
+const genDiff = (filepath1, filepath2, format = 'stylish') => {
   if (!existsSync(filepath1)) {
     return `could not find file ${filepath1}`;
   }
@@ -44,6 +44,7 @@ const genDiff = (filepath1, filepath2) => {
     return e;
   }
 
+  const formatDiff = getFormatter(format);
   return formatDiff(genDiffObj(struct1, struct2));
 };
 

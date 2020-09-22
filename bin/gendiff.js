@@ -3,7 +3,7 @@ import program from 'commander';
 import genDiff from '../src/index.js';
 
 const run = (filepath1, filepath2) => {
-  console.log(genDiff(filepath1, filepath2));
+  console.log(genDiff(filepath1, filepath2, program.format));
 };
 
 program
@@ -12,7 +12,7 @@ program
   .helpOption('-h, --help', 'output usage information');
 
 program
-  .option('-f, --format [type]', 'output format')
+  .option('-f, --format [type]', 'output format', 'stylish')
   .arguments('<filepath1> <filepath2>');
 
 program
