@@ -1,0 +1,12 @@
+{
+  "name": {
+    "firstname": "petya",
+    "secondname": "bomjev"
+  },
+  "mail": {
+    "email": "petya@mail.ru",
+    "index": 1008228
+  },
+  "cat": "Mur",
+  "university": "HSE"
+}
