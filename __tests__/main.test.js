@@ -1,7 +1,7 @@
 import { genDiff } from '../src/main.js';
 
 test('genDiff test', () => {
-  const obj1 = {
+  const objBefore = {
     name: 'vasya',
     mail: {
       email: 'vaziliybober@gmail.com',
@@ -11,7 +11,7 @@ test('genDiff test', () => {
     university: 'HSE',
   };
 
-  const obj2 = {
+  const objAfter = {
     name: {
       firstname: 'petya',
       secondname: 'bomjev',
@@ -65,6 +65,6 @@ test('genDiff test', () => {
     },
   };
 
-  const actual = genDiff(obj1, obj2);
+  const actual = genDiff(objBefore, objAfter);
   expect(actual).toEqual(diff);
 });

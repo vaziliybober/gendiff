@@ -80,20 +80,22 @@ export const genDiff = (objBefore, objAfter) => {
 };
 
 export const formatDiff = (diffObj) => {
-  const iter = (diff, spacing, specialFormatting) => {
+  const iter = (diff, spacing, specialFormatting = false) => {
     if (!_.isObject(diff)) {
       return diff;
     }
 
-    const keySpacing = spacing + '  ';
-    const newSpacing = spacing + '    ';
+    const keySpacing = `${spacing}  `;
+    const newSpacing = `${spacing}    `;
 
     const strings = Object.keys(diff).sort().map((key) => {
+      const buildString = (sign, value, isArray = false) => {
+        const keyString = isArray ? '' : `${key}: `;
+        return `${keySpacing}${sign} ${keyString}${value}`;
+      };
+
       if (!specialFormatting) {
-        if (_.isArray(diff)) {
-          return `${keySpacing}  ${iter(diff[key], newSpacing, false)}`;
-        }
-        return `${keySpacing}  ${key}: ${iter(diff[key], newSpacing, false)}`;
+        return buildString(' ', iter(diff[key], newSpacing), _.isArray(diff));
       }
 
       const {
@@ -101,29 +103,29 @@ export const formatDiff = (diffObj) => {
       } = diff[key];
 
       if (status === 'added') {
-        return `${keySpacing}+ ${key}: ${iter(value, newSpacing, false)}`;
+        return buildString('+', iter(value, newSpacing));
       }
 
       if (status === 'removed') {
-        return `${keySpacing}- ${key}: ${iter(value, newSpacing, false)}`;
-      }
-
-      if (status === 'modified') {
-        return `${keySpacing}- ${key}: ${iter(valueBefore, newSpacing, false)}\n${keySpacing}+ ${key}: ${iter(valueAfter, newSpacing, false)}`;
+        return buildString('-', iter(value, newSpacing));
       }
 
       if (status === 'unknown') {
-        return `${keySpacing}  ${key}: ${iter(value, newSpacing, true)}`;
+        return buildString(' ', iter(value, newSpacing, true));
       }
 
-      // status === 'unchanged'
-      return `${keySpacing}  ${key}: ${iter(value, newSpacing, false)}`;
+      if (status === 'unchanged') {
+        return buildString(' ', iter(value, newSpacing));
+      }
+
+      // status === 'modified'
+      return `${buildString('-', iter(valueBefore, newSpacing))}\n${
+        buildString('+', iter(valueAfter, newSpacing))}`;
     });
 
-    if (_.isArray(diff)) {
-      return `[\n${strings.join('\n')}\n${spacing}]`;
-    }
-    return `{\n${strings.join('\n')}\n${spacing}}`;
+    const [openPar, closePar] = _.isArray(diff) ? ['[', ']'] : ['{', '}'];
+
+    return `${openPar}\n${strings.join('\n')}\n${spacing}${closePar}`;
   };
 
   return iter(diffObj, '', true);
