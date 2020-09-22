@@ -1,6 +1,7 @@
 import { readFileSync, existsSync } from 'fs';
 import path from 'path';
-import { genDiff as genDiffObj, formatDiff } from './main.js';
+import genDiffObj from './main.js';
+import formatDiff from './formatter.js';
 import getParser from './parsers.js';
 
 const genDiff = (filepath1, filepath2) => {
