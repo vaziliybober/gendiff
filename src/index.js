@@ -1,51 +1,30 @@
-import { readFileSync, existsSync } from 'fs';
+import fs from 'fs';
 import path from 'path';
-import genDiffObj from './main.js';
+import genDiffStructure from './main.js';
 import getFormatter from './formatters/index.js';
 import getParser from './parsers.js';
 
+const readFile = (filepath) => {
+  const fullPath = path.resolve(process.cwd(), filepath);
+  const data = fs.readFileSync(fullPath).toString();
+  return data;
+};
+
+const parseFile = (filepath) => {
+  const rawData = readFile(filepath);
+  const extension = path.extname(filepath);
+  const parse = getParser(extension);
+
+  return parse(rawData);
+};
+
 const genDiff = (filepath1, filepath2, format = 'stylish') => {
-  if (!existsSync(filepath1)) {
-    return `could not find file ${filepath1}`;
-  }
-
-  if (!existsSync(filepath2)) {
-    return `could not find file ${filepath2}`;
-  }
-
-  let content1; let
-    content2;
-  try {
-    content1 = readFileSync(filepath1).toString();
-    content2 = readFileSync(filepath2).toString();
-  } catch (e) {
-    return e;
-  }
-
-  const ext1 = path.extname(filepath1);
-  const ext2 = path.extname(filepath2);
-  const parse1 = getParser(ext1);
-  const parse2 = getParser(ext2);
-
-  if (parse1 === null) {
-    return `${ext1} files are not supported`;
-  }
-
-  if (parse2 === null) {
-    return `${ext2} files are not supported`;
-  }
-
-  let struct1; let
-    struct2;
-  try {
-    struct1 = parse1(content1);
-    struct2 = parse2(content2);
-  } catch (e) {
-    return e;
-  }
+  const obj1 = parseFile(filepath1);
+  const obj2 = parseFile(filepath2);
 
   const formatDiff = getFormatter(format);
-  return formatDiff(genDiffObj(struct1, struct2));
+  const diffStructure = genDiffStructure(obj1, obj2);
+  return formatDiff(diffStructure);
 };
 
 export default genDiff;

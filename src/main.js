@@ -24,7 +24,7 @@ const addUnknown = (diff, key, valueBefore, valueAfter) => ({
   ...diff,
   [key]: {
     status: 'unknown',
-    value: genDiff(valueBefore, valueAfter),
+    value: genDiffStructure(valueBefore, valueAfter),
   },
 });
 
@@ -45,7 +45,7 @@ const addModified = (diff, key, valueBefore, valueAfter) => ({
   },
 });
 
-const genDiff = (objBefore, objAfter) => {
+const genDiffStructure = (objBefore, objAfter) => {
   const keysBefore = Object.keys(objBefore);
   const keysAfter = Object.keys(objAfter);
   const allKeys = _.union(keysBefore, keysAfter);
@@ -79,4 +79,4 @@ const genDiff = (objBefore, objAfter) => {
   return allKeys.reduce(reducer, {});
 };
 
-export default genDiff;
+export default genDiffStructure;
