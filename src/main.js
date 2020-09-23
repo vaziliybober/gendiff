@@ -1,10 +1,8 @@
-/* eslint-disable no-use-before-define */
-
 import _ from 'lodash';
 
 const isObjectNotArray = (value) => _.isObject(value) && !_.isArray(value);
 
-const addAdded = (diff, key, value) => ({
+const addNodeAdded = (diff, key, value) => ({
   ...diff,
   [key]: {
     status: 'added',
@@ -12,7 +10,7 @@ const addAdded = (diff, key, value) => ({
   },
 });
 
-const addRemoved = (diff, key, value) => ({
+const addNodeRemoved = (diff, key, value) => ({
   ...diff,
   [key]: {
     status: 'removed',
@@ -20,15 +18,15 @@ const addRemoved = (diff, key, value) => ({
   },
 });
 
-const addUnknown = (diff, key, valueBefore, valueAfter) => ({
+const addNodeUnknown = (diff, key, value) => ({
   ...diff,
   [key]: {
     status: 'unknown',
-    value: genDiffStructure(valueBefore, valueAfter),
+    value,
   },
 });
 
-const addUnchanged = (diff, key, value) => ({
+const addNodeUnchanged = (diff, key, value) => ({
   ...diff,
   [key]: {
     status: 'unchanged',
@@ -36,7 +34,7 @@ const addUnchanged = (diff, key, value) => ({
   },
 });
 
-const addModified = (diff, key, valueBefore, valueAfter) => ({
+const addNodeModified = (diff, key, valueBefore, valueAfter) => ({
   ...diff,
   [key]: {
     status: 'modified',
@@ -58,22 +56,22 @@ const genDiffStructure = (objBefore, objAfter) => {
     const valueAfter = objAfter[key];
 
     if (!isKeyBefore && isKeyAfter) {
-      return addAdded(acc, key, valueAfter);
+      return addNodeAdded(acc, key, valueAfter);
     }
 
     if (isKeyBefore && !isKeyAfter) {
-      return addRemoved(acc, key, valueBefore);
+      return addNodeRemoved(acc, key, valueBefore);
     }
 
     if (isObjectNotArray(valueBefore) && isObjectNotArray(valueAfter)) {
-      return addUnknown(acc, key, valueBefore, valueAfter);
+      return addNodeUnknown(acc, key, genDiffStructure(valueBefore, valueAfter));
     }
 
     if (_.isEqual(valueBefore, valueAfter)) {
-      return addUnchanged(acc, key, valueBefore);
+      return addNodeUnchanged(acc, key, valueBefore);
     }
 
-    return addModified(acc, key, valueBefore, valueAfter);
+    return addNodeModified(acc, key, valueBefore, valueAfter);
   };
 
   return allKeys.reduce(reducer, {});
