@@ -8,40 +8,38 @@ const formatValue = (value) => {
   return _.isString(value) ? `'${value}'` : value;
 };
 
-const formatDiff = (diffObj) => {
+const formatPlain = (diffObj) => {
   const iter = (diff, path) => {
-    const strings = Object.keys(diff).sort().map((key) => {
-      const {
-        status, value, valueBefore, valueAfter,
-      } = diff[key];
+    const strings = Object.keys(diff)
+      .filter((key) => diff[key].status !== 'unchanged')
+      .sort()
+      .map((key) => {
+        const {
+          status, value, valueBefore, valueAfter,
+        } = diff[key];
 
-      const fullPathString = [...path, key].join('.');
+        const fullPathString = [...path, key].join('.');
 
-      if (status === 'added') {
-        return `Property '${fullPathString}' was added with value: ${formatValue(value)}`;
-      }
+        if (status === 'added') {
+          return `Property '${fullPathString}' was added with value: ${formatValue(value)}`;
+        }
 
-      if (status === 'removed') {
-        return `Property '${fullPathString}' was removed`;
-      }
+        if (status === 'removed') {
+          return `Property '${fullPathString}' was removed`;
+        }
 
-      if (status === 'modified') {
-        return `Property '${fullPathString}' was updated. From ${formatValue(valueBefore)} to ${formatValue(valueAfter)}`;
-      }
+        if (status === 'modified') {
+          return `Property '${fullPathString}' was updated. From ${formatValue(valueBefore)} to ${formatValue(valueAfter)}`;
+        }
 
-      if (status === 'unchanged') {
-        return '';
-      }
+        // status === 'unknown'
+        return iter(value, [...path, key]);
+      });
 
-      // status === 'unknown'
-      return iter(value, [...path, key]);
-    });
-
-    return strings.filter((str) => str !== '')
-      .join('\n');
+    return strings.join('\n');
   };
 
   return iter(diffObj, []);
 };
 
-export default formatDiff;
+export default formatPlain;

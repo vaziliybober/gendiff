@@ -4,6 +4,8 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
 import genDiff from '../src/index.js';
+import formatPlain from '../src/formatters/plain.js';
+import genDiffStructure from '../src/main.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,8 +18,14 @@ test('json', () => {
   expect(actual).toBe(expected);
 });
 
-test('border case', () => {
+test('border case 1', () => {
   const expected = fs.readFileSync(getFixturePath('result-border-case')).toString();
   const actual = genDiff(getFixturePath('json-border-case-1.json'), getFixturePath('json-border-case-2.json'), 'plain');
+  expect(actual).toBe(expected);
+});
+
+test('border case 2', () => {
+  const expected = '';
+  const actual = formatPlain(genDiffStructure({}, {}));
   expect(actual).toBe(expected);
 });
