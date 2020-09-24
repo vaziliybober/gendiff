@@ -1,55 +1,74 @@
 import _ from 'lodash';
 
-const formatDiff = (diffObj) => {
-  const iter = (diff, spacing, specialFormatting = false) => {
-    if (!_.isObject(diff)) {
-      return diff;
-    }
+const formatInDiff = (key, node, spacing) => {
+  const {
+    status, value, valueBefore, valueAfter,
+  } = node;
 
-    const keySpacing = `${spacing}  `;
-    const newSpacing = `${spacing}    `;
+  const buildString = (sign, value) => `${spacing}${sign} ${key}: ${value}`;
+  const newSpacing = spacing + '  ';
 
-    const strings = Object.keys(diff).sort().map((key) => {
-      const buildString = (sign, value, isArray = false) => {
-        const keyString = isArray ? '' : `${key}: `;
-        return `${keySpacing}${sign} ${keyString}${value}`;
-      };
+  if (status === 'added') {
+    return buildString('+', iterDiff(value, newSpacing, false));
+  }
 
-      if (!specialFormatting) {
-        return buildString(' ', iter(diff[key], newSpacing), _.isArray(diff));
-      }
+  if (status === 'removed') {
+    return buildString('-', iterDiff(value, newSpacing, false));
+  }
 
-      const {
-        status, value, valueBefore, valueAfter,
-      } = diff[key];
+  if (status === 'unknown') {
+    return buildString(' ', iterDiff(value, newSpacing, true));
+  }
 
-      if (status === 'added') {
-        return buildString('+', iter(value, newSpacing));
-      }
+  if (status === 'unchanged') {
+    return buildString(' ', iterDiff(value, newSpacing, false));
+  }
 
-      if (status === 'removed') {
-        return buildString('-', iter(value, newSpacing));
-      }
+  // status === 'modified'
+  return `${buildString('-', iterDiff(valueBefore, newSpacing, false))}\n${
+    buildString('+', iterDiff(valueAfter, newSpacing, false))}`;
+}
 
-      if (status === 'unknown') {
-        return buildString(' ', iter(value, newSpacing, true));
-      }
+const formatInObject = (key, node, spacing) => {
+  const buildString = (value) => `${spacing}  ${key}: ${value}`;
 
-      if (status === 'unchanged') {
-        return buildString(' ', iter(value, newSpacing));
-      }
+  return buildString(iterDiff(node, spacing + '  ', false));
+}
 
-      // status === 'modified'
-      return `${buildString('-', iter(valueBefore, newSpacing))}\n${
-        buildString('+', iter(valueAfter, newSpacing))}`;
-    });
+const formatInArray = (node, spacing) => {
+  const buildString = (value) => `${spacing}  ${value}`;
 
-    const [openPar, closePar] = _.isArray(diff) ? ['[', ']'] : ['{', '}'];
+  return buildString(iterDiff(node, spacing + '  ', false));
+}
 
-    return `${openPar}\n${strings.join('\n')}\n${spacing}${closePar}`;
-  };
+const buildString = (strings, spacing, [openPar, closePar]) => {
+  return `${openPar}\n${strings.join('\n')}\n${spacing}${closePar}`;
+}
 
-  return iter(diffObj, '', true);
+const iterDiff = (node, spacing, isDiffNode) => {
+  if (!_.isObject(node)) {
+    return node;
+  }
+
+  const isArray = _.isArray(node);
+  const keys = Object.keys(node).sort();
+
+  if (isArray) {
+    const strings = keys.map(key => formatInArray(node[key], spacing + '  '));
+    return buildString(strings, spacing, ['[', ']']);
+  }
+  
+  if (isDiffNode) {
+    const strings = keys.map(key => formatInDiff(key, node[key], spacing + '  '));
+    return buildString(strings, spacing, ['{', '}']);
+  }
+
+  const strings = keys.map(key => formatInObject(key, node[key], spacing + '  '));
+  return buildString(strings, spacing, ['{', '}']);
+};
+
+const formatDiff = (diffStructure) => {
+  return iterDiff(diffStructure, '', true);
 };
 
 export default formatDiff;
