@@ -41,7 +41,7 @@ const formatInArray = (node, spacing) => {
   return buildString(iterDiff(node, spacing + '  ', false));
 }
 
-const buildString = (strings, spacing, [openPar, closePar]) => {
+const wrapDiffStrings = (strings, spacing, [openPar, closePar]) => {
   return `${openPar}\n${strings.join('\n')}\n${spacing}${closePar}`;
 }
 
@@ -52,19 +52,20 @@ const iterDiff = (node, spacing, isDiffNode) => {
 
   const isArray = _.isArray(node);
   const keys = Object.keys(node).sort();
+  const newSpacing = spacing + '  ';
 
   if (isArray) {
-    const strings = keys.map(key => formatInArray(node[key], spacing + '  '));
-    return buildString(strings, spacing, ['[', ']']);
+    const strings = keys.map(key => formatInArray(node[key], newSpacing));
+    return wrapDiffStrings(strings, spacing, ['[', ']']);
   }
   
   if (isDiffNode) {
-    const strings = keys.map(key => formatInDiff(key, node[key], spacing + '  '));
-    return buildString(strings, spacing, ['{', '}']);
+    const strings = keys.map(key => formatInDiff(key, node[key], newSpacing));
+    return wrapDiffStrings(strings, spacing, ['{', '}']);
   }
 
-  const strings = keys.map(key => formatInObject(key, node[key], spacing + '  '));
-  return buildString(strings, spacing, ['{', '}']);
+  const strings = keys.map(key => formatInObject(key, node[key], newSpacing));
+  return wrapDiffStrings(strings, spacing, ['{', '}']);
 };
 
 const formatDiff = (diffStructure) => {
