@@ -49,17 +49,17 @@ const genDiffStructure = (objBefore, objAfter) => {
   const allKeys = _.union(keysBefore, keysAfter);
 
   const reducer = (acc, key) => {
-    const isKeyBefore = keysBefore.includes(key);
-    const isKeyAfter = keysAfter.includes(key);
+    const isKeyBefore = _.has(objBefore, key);
+    const isKeyAfter = _.has(objAfter, key);
 
     const valueBefore = objBefore[key];
     const valueAfter = objAfter[key];
 
-    if (!isKeyBefore && isKeyAfter) {
+    if (!isKeyBefore) {
       return addNodeAdded(acc, key, valueAfter);
     }
 
-    if (isKeyBefore && !isKeyAfter) {
+    if (!isKeyAfter) {
       return addNodeRemoved(acc, key, valueBefore);
     }
 
