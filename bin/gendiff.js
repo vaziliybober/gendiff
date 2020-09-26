@@ -3,12 +3,9 @@ import program from 'commander';
 import genDiff from '../src/index.js';
 
 const run = (filepath1, filepath2) => {
-  try {
-    const diff = genDiff(filepath1, filepath2, program.format);
-    console.log(diff);
-  } catch (e) {
-    console.log(e.message);
-  }
+  const diff = genDiff(filepath1, filepath2, program.format);
+  console.log(diff);
+
 };
 
 program
