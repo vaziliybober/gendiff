@@ -10,10 +10,23 @@ const readFile = (filepath) => {
   return data;
 };
 
+const getFileFormat = (filepath) => {
+  const extension = path.extname(filepath);
+  
+  switch(extension) {
+    case '.yml':
+      return 'yaml';
+    case '.ini':
+      return 'ini';
+    default:
+      return 'json';
+  }
+}
+
 const parseFile = (filepath) => {
   const rawData = readFile(filepath);
-  const extension = path.extname(filepath);
-  const parse = getParser(extension);
+  const fileForamt = getFileFormat(filepath);
+  const parse = getParser(fileForamt);
 
   return parse(rawData);
 };
