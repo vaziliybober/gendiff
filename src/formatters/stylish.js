@@ -14,7 +14,8 @@ const stringifyObject = (obj, depth = 0) => {
   });
 
   const [openPar, closePar] = _.isArray(obj) ? ['[', ']'] : ['{', '}'];
-  return `${[openPar, ...entryStrings].join(`\n${space.repeat(depth + 1)}`)}\n${space.repeat(depth)}${closePar}`;
+  const wrappedEntryStrings = `${[openPar, ...entryStrings].join(`\n${space.repeat(depth + 1)}`)}\n${space.repeat(depth)}${closePar}`;
+  return wrappedEntryStrings;
 };
 
 const formatStylish = (diffStructure) => {
@@ -48,7 +49,8 @@ const formatStylish = (diffStructure) => {
       throw new Error(`Incorrect node type: ${type}`);
     });
 
-    return `${['{', ...diffStrings].join(`\n${`  ${space.repeat(depth)}`}`)}\n${space.repeat(depth)}}`;
+    const wrappedDiffStrings = `${['{', ...diffStrings].join(`\n${`  ${space.repeat(depth)}`}`)}\n${space.repeat(depth)}}`;
+    return wrappedDiffStrings;
   };
 
   return iter(diffStructure, 0);

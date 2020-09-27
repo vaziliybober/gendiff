@@ -1,3 +1,3 @@
-const formatJson = (diffObj) => JSON.stringify(diffObj);
+const formatJson = (diffStructure) => JSON.stringify(diffStructure);
 
 export default formatJson;

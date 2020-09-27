@@ -12,4 +12,6 @@ const getParser = (formatName) => {
   }
 };
 
-export default getParser;
+const parse = (data, formatName = 'json') => getParser(formatName)(data);
+
+export default parse;

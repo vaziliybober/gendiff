@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import genDiffStructure from './main.js';
 import getFormatter from './formatters/index.js';
-import getParser from './parsers.js';
+import parse from './parsers/index.js';
 
 const readFile = (filepath) => {
   const fullPath = path.resolve(process.cwd(), filepath);
@@ -26,9 +26,7 @@ const getFileFormat = (filepath) => {
 const parseFile = (filepath) => {
   const rawData = readFile(filepath);
   const fileForamt = getFileFormat(filepath);
-  const parse = getParser(fileForamt);
-
-  return parse(rawData);
+  return parse(rawData, fileForamt);
 };
 
 const genDiff = (filepath1, filepath2, format = 'stylish') => {
