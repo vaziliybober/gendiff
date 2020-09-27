@@ -8,7 +8,6 @@ test('genDiff test', () => {
       index: 1008228,
     },
     dog: 'Terra',
-    university: 'HSE',
   };
 
   const objAfter = {
@@ -21,11 +20,47 @@ test('genDiff test', () => {
       index: 1008228,
     },
     cat: 'Mur',
-    university: 'HSE',
   };
 
-  const diff = {
-    name: {
+  const diff = [
+    {
+      type: 'leaf',
+      name: 'cat',
+      status: 'added',
+      value: 'Mur',
+    },
+
+    {
+      type: 'leaf',
+      name: 'dog',
+      status: 'removed',
+      value: 'Terra',
+    },
+
+    {
+      type: 'node',
+      name: 'mail',
+      children: [
+        {
+          type: 'leaf',
+          name: 'email',
+          status: 'modified',
+          valueBefore: 'vaziliybober@gmail.com',
+          valueAfter: 'petya@mail.ru',
+        },
+
+        {
+          type: 'leaf',
+          name: 'index',
+          status: 'unchanged',
+          value: 1008228,
+        },
+      ],
+    },
+
+    {
+      type: 'leaf',
+      name: 'name',
       status: 'modified',
       valueBefore: 'vasya',
       valueAfter: {
@@ -33,37 +68,7 @@ test('genDiff test', () => {
         secondname: 'bomjev',
       },
     },
-
-    mail: {
-      status: 'unknown',
-      value: {
-        email: {
-          status: 'modified',
-          valueBefore: 'vaziliybober@gmail.com',
-          valueAfter: 'petya@mail.ru',
-        },
-        index: {
-          status: 'unchanged',
-          value: 1008228,
-        },
-      },
-    },
-
-    dog: {
-      status: 'removed',
-      value: 'Terra',
-    },
-
-    cat: {
-      status: 'added',
-      value: 'Mur',
-    },
-
-    university: {
-      status: 'unchanged',
-      value: 'HSE',
-    },
-  };
+  ];
 
   const actual = genDiff(objBefore, objAfter);
   expect(actual).toEqual(diff);

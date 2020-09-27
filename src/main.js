@@ -2,45 +2,39 @@ import _ from 'lodash';
 
 const isObjectNotArray = (value) => _.isObject(value) && !_.isArray(value);
 
-const addNodeAdded = (diff, key, value) => ({
-  ...diff,
-  [key]: {
-    status: 'added',
-    value: _.cloneDeep(value),
-  },
+const buildLeafAdded = (key, value) => ({
+  type: 'leaf',
+  name: key,
+  status: 'added',
+  value,
 });
 
-const addNodeRemoved = (diff, key, value) => ({
-  ...diff,
-  [key]: {
-    status: 'removed',
-    value: _.cloneDeep(value),
-  },
+const buildLeafRemoved = (key, value) => ({
+  type: 'leaf',
+  name: key,
+  status: 'removed',
+  value,
 });
 
-const addNodeUnknown = (diff, key, value) => ({
-  ...diff,
-  [key]: {
-    status: 'unknown',
-    value,
-  },
+const buildNode = (key, children) => ({
+  type: 'node',
+  name: key,
+  children,
 });
 
-const addNodeUnchanged = (diff, key, value) => ({
-  ...diff,
-  [key]: {
-    status: 'unchanged',
-    value: _.cloneDeep(value),
-  },
+const buildLeafUnchanged = (key, value) => ({
+  type: 'leaf',
+  name: key,
+  status: 'unchanged',
+  value,
 });
 
-const addNodeModified = (diff, key, valueBefore, valueAfter) => ({
-  ...diff,
-  [key]: {
-    status: 'modified',
-    valueBefore: _.cloneDeep(valueBefore),
-    valueAfter: _.cloneDeep(valueAfter),
-  },
+const buildLeafModified = (key, valueBefore, valueAfter) => ({
+  type: 'leaf',
+  name: key,
+  status: 'modified',
+  valueBefore,
+  valueAfter,
 });
 
 const genDiffStructure = (objBefore, objAfter) => {
@@ -48,7 +42,7 @@ const genDiffStructure = (objBefore, objAfter) => {
   const keysAfter = Object.keys(objAfter);
   const allKeys = _.union(keysBefore, keysAfter);
 
-  const reducer = (acc, key) => {
+  const mapKeyToNode = (key) => {
     const isKeyBefore = _.has(objBefore, key);
     const isKeyAfter = _.has(objAfter, key);
 
@@ -56,25 +50,25 @@ const genDiffStructure = (objBefore, objAfter) => {
     const valueAfter = objAfter[key];
 
     if (!isKeyBefore) {
-      return addNodeAdded(acc, key, valueAfter);
+      return buildLeafAdded(key, valueAfter);
     }
 
     if (!isKeyAfter) {
-      return addNodeRemoved(acc, key, valueBefore);
+      return buildLeafRemoved(key, valueBefore);
     }
 
     if (isObjectNotArray(valueBefore) && isObjectNotArray(valueAfter)) {
-      return addNodeUnknown(acc, key, genDiffStructure(valueBefore, valueAfter));
+      return buildNode(key, genDiffStructure(valueBefore, valueAfter));
     }
 
     if (_.isEqual(valueBefore, valueAfter)) {
-      return addNodeUnchanged(acc, key, valueBefore);
+      return buildLeafUnchanged(key, valueBefore);
     }
 
-    return addNodeModified(acc, key, valueBefore, valueAfter);
+    return buildLeafModified(key, valueBefore, valueAfter);
   };
 
-  return allKeys.reduce(reducer, {});
+  return allKeys.sort().map(mapKeyToNode);
 };
 
 export default genDiffStructure;
