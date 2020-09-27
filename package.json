@@ -1,7 +1,16 @@
 {
   "name": "@vaziliybober/gendiff",
   "version": "1.0.0",
-  "description": "Diff generator",
+  "description": "Generator of difference between two config files",
+  "keywords": [
+    "gendiff",
+    "difference",
+    "generate difference",
+    "generate diff",
+    "json diff",
+    "yaml diff",
+    "ini diff"
+  ],
   "main": "src/index.js",
   "type": "module",
   "scripts": {
