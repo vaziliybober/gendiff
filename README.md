@@ -6,6 +6,8 @@
 
 Gendiff is an npm module that generates the difference between two configuration files and formats it into a string
 
+The following configuration file types are supported: json (.json), yaml (.yml), ini (.ini)
+
 ## Example
     
 <table>
