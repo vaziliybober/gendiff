@@ -1,71 +1,57 @@
 import _ from 'lodash';
 
-const formatInDiff = (key, node, spacing, getValueString) => {
-  const {
-    status, value, valueBefore, valueAfter,
-  } = node;
+const space = '    ';
 
-  const buildString = (sign, valueString) => `${spacing}${sign} ${key}: ${valueString}`;
-  const newSpacing = `${spacing}  `;
-
-  if (status === 'added') {
-    return buildString('+', getValueString(value, newSpacing, false));
+const stringifyObject = (obj, depth = 0) => {
+  if (!_.isObject(obj)) {
+    return String(obj);
   }
 
-  if (status === 'removed') {
-    return buildString('-', getValueString(value, newSpacing, false));
-  }
+  const entryStrings = Object.keys(obj).sort().map((key) => {
+    const value = obj[key];
+    const keyString = _.isArray(obj) ? '' : `${key}: `;
+    return `${keyString}${stringifyObject(value, depth + 1)}`;
+  });
 
-  if (status === 'unknown') {
-    return buildString(' ', getValueString(value, newSpacing, true));
-  }
-
-  if (status === 'unchanged') {
-    return buildString(' ', getValueString(value, newSpacing, false));
-  }
-
-  // status === 'modified'
-  return `${buildString('-', getValueString(valueBefore, newSpacing, false))}\n${
-    buildString('+', getValueString(valueAfter, newSpacing, false))}`;
+  const [openPar, closePar] = _.isArray(obj) ? ['[', ']'] : ['{', '}'];
+  return `${[openPar, ...entryStrings].join(`\n${space.repeat(depth + 1)}`)}\n${space.repeat(depth)}${closePar}`;
 };
 
-const formatInObject = (key, node, spacing, getValueString) => {
-  const buildString = (value) => `${spacing}  ${key}: ${value}`;
+const formatStylish = (diffStructure) => {
+  const iter = (currentDiffStructure, depth) => {
+    const diffStrings = currentDiffStructure.flatMap((node) => {
+      const {
+        type, name, status, value, valueBefore, valueAfter, children,
+      } = node;
 
-  return buildString(getValueString(node, `${spacing}  `, false));
+      const buildString = (sign, valueString) => `${sign} ${name}: ${valueString}`;
+
+      if (type === 'node') {
+        return buildString(' ', iter(children, depth + 1));
+      }
+
+      if (type === 'leaf') {
+        switch (status) {
+          case 'added':
+            return buildString('+', stringifyObject(value, depth + 1));
+          case 'removed':
+            return buildString('-', stringifyObject(value, depth + 1));
+          case 'unchanged':
+            return buildString(' ', stringifyObject(value, depth + 1));
+          case 'modified':
+            return [buildString('-', stringifyObject(valueBefore, depth + 1)), buildString('+', stringifyObject(valueAfter, depth + 1))];
+          default:
+            throw new Error(`Incorrect node status: ${status}`);
+        }
+      }
+
+      throw new Error(`Incorrect node type: ${type}`);
+    });
+
+    return `${['{', ...diffStrings].join(`\n${`  ${space.repeat(depth)}`}`)}\n${space.repeat(depth)}}`;
+  };
+
+  return iter(diffStructure, 0);
 };
-
-const formatInArray = (node, spacing, getValueString) => {
-  const buildString = (value) => `${spacing}  ${value}`;
-
-  return buildString(getValueString(node, `${spacing}  `, false));
-};
-
-const wrapDiffStrings = (strings, spacing, [openPar, closePar]) => `${openPar}\n${strings.join('\n')}\n${spacing}${closePar}`;
-
-const iterDiff = (node, spacing, isDiffNode) => {
-  if (!_.isObject(node)) {
-    return node;
-  }
-
-  const isArray = _.isArray(node);
-  const keys = Object.keys(node).sort();
-  const newSpacing = `${spacing}  `;
-
-  if (isArray) {
-    const strings = keys.map((key) => formatInArray(node[key], newSpacing, iterDiff));
-    return wrapDiffStrings(strings, spacing, ['[', ']']);
-  }
-
-  if (isDiffNode) {
-    const strings = keys.map((key) => formatInDiff(key, node[key], newSpacing, iterDiff));
-    return wrapDiffStrings(strings, spacing, ['{', '}']);
-  }
-
-  const strings = keys.map((key) => formatInObject(key, node[key], newSpacing, iterDiff));
-  return wrapDiffStrings(strings, spacing, ['{', '}']);
-};
-
-const formatStylish = (diffStructure) => iterDiff(diffStructure, '', true);
 
 export default formatStylish;

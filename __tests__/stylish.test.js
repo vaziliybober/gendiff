@@ -15,6 +15,7 @@ const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', 
 test('nested json', () => {
   const expected = fs.readFileSync(getFixturePath('result-nested')).toString();
   const actual = genDiff(getFixturePath('json-nested-1.json'), getFixturePath('json-nested-2.json'));
+  console.log(actual);
   expect(actual).toBe(expected);
 });
 
@@ -43,7 +44,7 @@ test('border case 1', () => {
 });
 
 test('border case 2', () => {
-  const expected = '{\n\n}';
+  const expected = '{\n}';
   const actual = formatStylish(genDiffStructure({}, {}));
   expect(actual).toBe(expected);
 });

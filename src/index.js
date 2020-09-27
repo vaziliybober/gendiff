@@ -12,8 +12,8 @@ const readFile = (filepath) => {
 
 const getFileFormat = (filepath) => {
   const extension = path.extname(filepath);
-  
-  switch(extension) {
+
+  switch (extension) {
     case '.yml':
       return 'yaml';
     case '.ini':
@@ -21,7 +21,7 @@ const getFileFormat = (filepath) => {
     default:
       return 'json';
   }
-}
+};
 
 const parseFile = (filepath) => {
   const rawData = readFile(filepath);
