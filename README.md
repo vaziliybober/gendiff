@@ -94,3 +94,9 @@ The following configuration file types are supported: json (.json), yaml (.yml),
       -V, --version        output the version number
       -f, --format [type]  output format (default: "stylish")
       -h, --help           output usage information
+
+## Demo
+
+<details><summary>Show Demo</summary>
+<a href="https://asciinema.org/a/362030" target="_blank"><img src="https://asciinema.org/a/362030.svg" /></a>
+</details>
