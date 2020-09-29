@@ -1,7 +1,5 @@
 import _ from 'lodash';
 
-const isObjectNotArray = (value) => _.isObject(value) && !_.isArray(value);
-
 const buildLeafAdded = (key, value) => ({
   name: key,
   status: 'added',
@@ -42,18 +40,18 @@ const genDiffStructure = (objBefore, objAfter) => {
     const isKeyBefore = _.has(objBefore, key);
     const isKeyAfter = _.has(objAfter, key);
 
-    const valueBefore = objBefore[key];
-    const valueAfter = objAfter[key];
-
     if (!isKeyBefore) {
-      return buildLeafAdded(key, valueAfter);
+      return buildLeafAdded(key, objAfter[key]);
     }
 
     if (!isKeyAfter) {
-      return buildLeafRemoved(key, valueBefore);
+      return buildLeafRemoved(key, objBefore[key]);
     }
 
-    if (isObjectNotArray(valueBefore) && isObjectNotArray(valueAfter)) {
+    const valueBefore = objBefore[key];
+    const valueAfter = objAfter[key];
+
+    if (_.isPlainObject(valueBefore) && _.isPlainObject(valueAfter)) {
       return buildNode(key, genDiffStructure(valueBefore, valueAfter));
     }
 
@@ -97,7 +95,7 @@ const genDiffStructure = (objBefore, objAfter) => {
 //       }
 //     }
 
-//     if (isObjectNotArray(valueBefore) && isObjectNotArray(valueAfter)) {
+//     if (_.isPlainObject(valueBefore) && _.isPlainObject(valueAfter)) {
 //       return {
 //         type: 'node',
 //         name: key,
