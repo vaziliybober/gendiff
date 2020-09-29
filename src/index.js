@@ -14,12 +14,14 @@ const getFileFormat = (filepath) => {
   const extension = path.extname(filepath);
 
   switch (extension) {
+    case '.json':
+      return 'json';
     case '.yml':
       return 'yaml';
     case '.ini':
       return 'ini';
     default:
-      return 'json';
+      throw new Error('Extension not supported: ' + extension);
   }
 };
 
