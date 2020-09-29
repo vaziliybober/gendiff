@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import genDiffStructure from './main.js';
-import getFormatter from './formatters/index.js';
+import genDiffStructure from './genDiffStructure.js';
+import format from './formatters/index.js';
 import parse from './parsers/index.js';
 
 const readFile = (filepath) => {
@@ -29,13 +29,12 @@ const parseFile = (filepath) => {
   return parse(rawData, fileForamt);
 };
 
-const genDiff = (filepath1, filepath2, format = 'stylish') => {
+const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
   const obj1 = parseFile(filepath1);
   const obj2 = parseFile(filepath2);
 
-  const formatDiff = getFormatter(format);
   const diffStructure = genDiffStructure(obj1, obj2);
-  return formatDiff(diffStructure);
+  return format(diffStructure, formatName);
 };
 
 export default genDiff;

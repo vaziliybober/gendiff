@@ -4,13 +4,17 @@ import json from './json.js';
 
 const getFormatter = (name) => {
   switch (name) {
+    case 'stylish':
+      return stylish;
     case 'plain':
       return plain;
     case 'json':
       return json;
     default:
-      return stylish;
+      throw new Error(`Unknown format: ${name}`);
   }
 };
 
-export default getFormatter;
+const format = (diffStructure, formatName) => getFormatter(formatName)(diffStructure);
+
+export default format;

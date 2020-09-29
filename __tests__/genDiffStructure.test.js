@@ -1,4 +1,4 @@
-import genDiff from '../src/main.js';
+import genDiff from '../src/genDiffStructure.js';
 
 test('genDiff test', () => {
   const objBefore = {
