@@ -13,7 +13,7 @@ test('genDiff test', () => {
   const objAfter = {
     name: {
       firstname: 'petya',
-      secondname: 'bomjev',
+      secondname: 'vlasov',
     },
     mail: {
       email: 'petya@mail.ru',
@@ -60,7 +60,7 @@ test('genDiff test', () => {
       valueBefore: 'vasya',
       valueAfter: {
         firstname: 'petya',
-        secondname: 'bomjev',
+        secondname: 'vlasov',
       },
     },
   ];
