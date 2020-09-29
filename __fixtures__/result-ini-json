@@ -1,0 +1,132 @@
+[
+  {
+    "type": "node",
+    "name": "common",
+    "children": [
+      {
+        "type": "leaf",
+        "name": "follow",
+        "status": "added",
+        "value": false
+      },
+      {
+        "type": "leaf",
+        "name": "setting1",
+        "status": "unchanged",
+        "value": "Value 1"
+      },
+      {
+        "type": "leaf",
+        "name": "setting2",
+        "status": "removed",
+        "value": "200"
+      },
+      {
+        "type": "leaf",
+        "name": "setting3",
+        "status": "modified",
+        "valueBefore": true,
+        "valueAfter": {
+          "key": "value"
+        }
+      },
+      {
+        "type": "leaf",
+        "name": "setting4",
+        "status": "added",
+        "value": "blah blah"
+      },
+      {
+        "type": "leaf",
+        "name": "setting5",
+        "status": "added",
+        "value": {
+          "key5": "value5"
+        }
+      },
+      {
+        "type": "node",
+        "name": "setting6",
+        "children": [
+          {
+            "type": "node",
+            "name": "doge",
+            "children": [
+              {
+                "type": "leaf",
+                "name": "wow",
+                "status": "modified",
+                "valueBefore": "too much",
+                "valueAfter": "so much"
+              }
+            ]
+          },
+          {
+            "type": "leaf",
+            "name": "key",
+            "status": "unchanged",
+            "value": "value"
+          },
+          {
+            "type": "leaf",
+            "name": "ops",
+            "status": "added",
+            "value": "vops"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "node",
+    "name": "group1",
+    "children": [
+      {
+        "type": "leaf",
+        "name": "baz",
+        "status": "modified",
+        "valueBefore": "bas",
+        "valueAfter": "bars"
+      },
+      {
+        "type": "leaf",
+        "name": "foo",
+        "status": "unchanged",
+        "value": "bar"
+      },
+      {
+        "type": "leaf",
+        "name": "nest",
+        "status": "modified",
+        "valueBefore": {
+          "key": "value"
+        },
+        "valueAfter": "str"
+      }
+    ]
+  },
+  {
+    "type": "leaf",
+    "name": "group2",
+    "status": "removed",
+    "value": {
+      "abc": "12345",
+      "deep": {
+        "id": "45"
+      }
+    }
+  },
+  {
+    "type": "leaf",
+    "name": "group3",
+    "status": "added",
+    "value": {
+      "fee": "100500",
+      "deep": {
+        "id": {
+          "number": "45"
+        }
+      }
+    }
+  }
+]

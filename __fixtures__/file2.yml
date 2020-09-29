@@ -7,13 +7,16 @@ common:
   setting5:
     key5: value5
   setting6:
-    key: value
-    ops: vops
-    doge:
-      wow: so much
+    - key: value
+      ops: vops
+      doge:
+        wow: so much
 group1:
   foo: bar
-  baz: bars
+  baz:
+    - 1
+    - - 2
+      - 3
   nest: str
 group3:
   fee: 100500

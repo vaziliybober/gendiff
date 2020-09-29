@@ -3,11 +3,17 @@ common:
   setting2: 200
   setting3: true
   setting6:
-    key: value
-    doge:
-      wow: too much
+    - key: value
+      doge:
+        wow: too much
+    - - elem1
+      - elem2
+    - elem3
 group1:
-  baz: bas
+  baz:
+    - 1
+    - - 2
+      - 3
   foo: bar
   nest:
     key: value

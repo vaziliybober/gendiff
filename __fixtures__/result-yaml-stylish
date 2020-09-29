@@ -11,18 +11,37 @@
       + setting5: {
             key5: value5
         }
-        setting6: {
-            doge: {
-              - wow: too much
-              + wow: so much
+      - setting6: [
+            {
+                doge: {
+                    wow: too much
+                }
+                key: value
             }
-            key: value
-          + ops: vops
-        }
+            [
+                elem1
+                elem2
+            ]
+            elem3
+        ]
+      + setting6: [
+            {
+                doge: {
+                    wow: so much
+                }
+                key: value
+                ops: vops
+            }
+        ]
     }
     group1: {
-      - baz: bas
-      + baz: bars
+        baz: [
+            1
+            [
+                2
+                3
+            ]
+        ]
         foo: bar
       - nest: {
             key: value
