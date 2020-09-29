@@ -17,7 +17,7 @@ test.each`
   ${'file1.ini'}    | ${'file2.ini'}  | ${'result-ini-stylish'}
 `("genDiff($filename1, $filename2, 'stylish')", ({ filename1, filename2, resultFilename }) => {
   const expected = fs.readFileSync(getFixturePath(resultFilename)).toString();
-  const actual = genDiff(getFixturePath(filename1), getFixturePath(filename2), 'stylish');
+  const actual = genDiff(getFixturePath(filename1), getFixturePath(filename2));
   expect(actual).toEqual(expected);
 });
 
