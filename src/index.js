@@ -21,7 +21,7 @@ const getFileFormat = (filepath) => {
     case '.ini':
       return 'ini';
     default:
-      throw new Error('Extension not supported: ' + extension);
+      throw new Error(`Extension not supported: ${extension}`);
   }
 };
 

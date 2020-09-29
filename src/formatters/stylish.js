@@ -14,8 +14,9 @@ const stringifyObject = (obj, depth = 0) => {
   });
 
   const [openBrace, closeBrace] = _.isArray(obj) ? ['[', ']'] : ['{', '}'];
-  const wrappedEntryStrings = `${[openBrace, ...entryStrings].join(`\n${space.repeat(depth + 1)}`)}\n${space.repeat(depth)}${closeBrace}`;
-  return wrappedEntryStrings;
+  const objWithOpenBraceOnly = [openBrace, ...entryStrings].join(`\n${space.repeat(depth + 1)}`);
+  const objWithBothBraces = `${objWithOpenBraceOnly}\n${space.repeat(depth)}${closeBrace}`;
+  return objWithBothBraces;
 };
 
 const formatStylish = (diffStructure) => {
@@ -43,8 +44,10 @@ const formatStylish = (diffStructure) => {
       }
     });
 
-    const wrappedDiffStrings = `${['{', ...diffStrings].join(`\n${`  ${space.repeat(depth)}`}`)}\n${space.repeat(depth)}}`;
-    return wrappedDiffStrings;
+    const diffWithOpenBraceOnly = ['{', ...diffStrings].join(`\n${`  ${space.repeat(depth)}`}`);
+    const diffWithBothBraces = `${diffWithOpenBraceOnly}\n${space.repeat(depth)}}`;
+
+    return diffWithBothBraces;
   };
 
   return iter(diffStructure, 0);
