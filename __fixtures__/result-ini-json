@@ -1,28 +1,24 @@
 [
   {
-    "type": "node",
     "name": "common",
+    "status": "nested",
     "children": [
       {
-        "type": "leaf",
         "name": "follow",
         "status": "added",
         "value": false
       },
       {
-        "type": "leaf",
         "name": "setting1",
         "status": "unchanged",
         "value": "Value 1"
       },
       {
-        "type": "leaf",
         "name": "setting2",
         "status": "removed",
         "value": "200"
       },
       {
-        "type": "leaf",
         "name": "setting3",
         "status": "modified",
         "valueBefore": true,
@@ -31,13 +27,11 @@
         }
       },
       {
-        "type": "leaf",
         "name": "setting4",
         "status": "added",
         "value": "blah blah"
       },
       {
-        "type": "leaf",
         "name": "setting5",
         "status": "added",
         "value": {
@@ -45,15 +39,14 @@
         }
       },
       {
-        "type": "node",
         "name": "setting6",
+        "status": "nested",
         "children": [
           {
-            "type": "node",
             "name": "doge",
+            "status": "nested",
             "children": [
               {
-                "type": "leaf",
                 "name": "wow",
                 "status": "modified",
                 "valueBefore": "too much",
@@ -62,13 +55,11 @@
             ]
           },
           {
-            "type": "leaf",
             "name": "key",
             "status": "unchanged",
             "value": "value"
           },
           {
-            "type": "leaf",
             "name": "ops",
             "status": "added",
             "value": "vops"
@@ -78,24 +69,21 @@
     ]
   },
   {
-    "type": "node",
     "name": "group1",
+    "status": "nested",
     "children": [
       {
-        "type": "leaf",
         "name": "baz",
         "status": "modified",
         "valueBefore": "bas",
         "valueAfter": "bars"
       },
       {
-        "type": "leaf",
         "name": "foo",
         "status": "unchanged",
         "value": "bar"
       },
       {
-        "type": "leaf",
         "name": "nest",
         "status": "modified",
         "valueBefore": {
@@ -106,7 +94,6 @@
     ]
   },
   {
-    "type": "leaf",
     "name": "group2",
     "status": "removed",
     "value": {
@@ -117,7 +104,6 @@
     }
   },
   {
-    "type": "leaf",
     "name": "group3",
     "status": "added",
     "value": {

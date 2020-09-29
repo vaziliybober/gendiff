@@ -22,31 +22,25 @@ const formatStylish = (diffStructure) => {
   const iter = (currentDiffStructure, depth) => {
     const diffStrings = currentDiffStructure.flatMap((node) => {
       const {
-        type, name, status, value, valueBefore, valueAfter, children,
+        name, status, value, valueBefore, valueAfter, children,
       } = node;
 
       const buildString = (sign, valueString) => `${sign} ${name}: ${valueString}`;
 
-      if (type === 'node') {
-        return buildString(' ', iter(children, depth + 1));
+      switch (status) {
+        case 'added':
+          return buildString('+', stringifyObject(value, depth + 1));
+        case 'removed':
+          return buildString('-', stringifyObject(value, depth + 1));
+        case 'unchanged':
+          return buildString(' ', stringifyObject(value, depth + 1));
+        case 'modified':
+          return [buildString('-', stringifyObject(valueBefore, depth + 1)), buildString('+', stringifyObject(valueAfter, depth + 1))];
+        case 'nested':
+          return buildString(' ', iter(children, depth + 1));
+        default:
+          throw new Error(`Incorrect status: ${status}`);
       }
-
-      if (type === 'leaf') {
-        switch (status) {
-          case 'added':
-            return buildString('+', stringifyObject(value, depth + 1));
-          case 'removed':
-            return buildString('-', stringifyObject(value, depth + 1));
-          case 'unchanged':
-            return buildString(' ', stringifyObject(value, depth + 1));
-          case 'modified':
-            return [buildString('-', stringifyObject(valueBefore, depth + 1)), buildString('+', stringifyObject(valueAfter, depth + 1))];
-          default:
-            throw new Error(`Incorrect node status: ${status}`);
-        }
-      }
-
-      throw new Error(`Incorrect node type: ${type}`);
     });
 
     const wrappedDiffStrings = `${['{', ...diffStrings].join(`\n${`  ${space.repeat(depth)}`}`)}\n${space.repeat(depth)}}`;

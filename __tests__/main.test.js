@@ -24,25 +24,22 @@ test('genDiff test', () => {
 
   const diff = [
     {
-      type: 'leaf',
       name: 'cat',
       status: 'added',
       value: 'Mur',
     },
 
     {
-      type: 'leaf',
       name: 'dog',
       status: 'removed',
       value: 'Terra',
     },
 
     {
-      type: 'node',
       name: 'mail',
+      status: 'nested',
       children: [
         {
-          type: 'leaf',
           name: 'email',
           status: 'modified',
           valueBefore: 'vaziliybober@gmail.com',
@@ -50,7 +47,6 @@ test('genDiff test', () => {
         },
 
         {
-          type: 'leaf',
           name: 'index',
           status: 'unchanged',
           value: 1008228,
@@ -59,7 +55,6 @@ test('genDiff test', () => {
     },
 
     {
-      type: 'leaf',
       name: 'name',
       status: 'modified',
       valueBefore: 'vasya',
