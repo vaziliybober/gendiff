@@ -4,7 +4,7 @@ const space = '    ';
 
 const stringifyObject = (obj, depth = 0) => {
   if (!_.isObject(obj)) {
-    return String(obj);
+    return obj;
   }
 
   const entryStrings = Object.keys(obj).sort().map((key) => {
@@ -13,8 +13,8 @@ const stringifyObject = (obj, depth = 0) => {
     return `${keyString}${stringifyObject(value, depth + 1)}`;
   });
 
-  const [openPar, closePar] = _.isArray(obj) ? ['[', ']'] : ['{', '}'];
-  const wrappedEntryStrings = `${[openPar, ...entryStrings].join(`\n${space.repeat(depth + 1)}`)}\n${space.repeat(depth)}${closePar}`;
+  const [openBrace, closeBrace] = _.isArray(obj) ? ['[', ']'] : ['{', '}'];
+  const wrappedEntryStrings = `${[openBrace, ...entryStrings].join(`\n${space.repeat(depth + 1)}`)}\n${space.repeat(depth)}${closeBrace}`;
   return wrappedEntryStrings;
 };
 
