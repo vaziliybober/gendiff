@@ -9,7 +9,9 @@ Gendiff is an npm module that generates the difference between two configuration
 The following configuration file types are supported: json (.json), yaml (.yml), ini (.ini)
 
 ## Example
-    
+
+In this example three pairs of files are containing the same data, but in different formats. Because the data itself is the same, the gendiff applied to all the three sets of data will lead to equal results:
+
 <table>
 <tr>
 <th>file1.json</th>
@@ -31,7 +33,6 @@ The following configuration file types are supported: json (.json), yaml (.yml),
         }
       }
     }
-
 </td>
 <td>
 
@@ -45,9 +46,8 @@ The following configuration file types are supported: json (.json), yaml (.yml),
         }
       }
     }
-
 </td>
-<td>
+<td rowspan="5">
 
     {
       - hello: world
@@ -63,20 +63,77 @@ The following configuration file types are supported: json (.json), yaml (.yml),
             }
         }
     }
-
 </td>
-<td>
+<td rowspan="5">
 
     Property 'hello' was removed
     Property 'number' was added with value: 17
     Property 'obj.node.str' was updated. From 'jkl;' to 'asdf'
-
 </td>
-<td>
+<td rowspan="5">
 
 [{"type":"leaf","name":"hello","status":"removed","value":"world"},{"type":"leaf","name":"number","status":"added","value":17},{"type":"node","name":"obj","children":[{"type":"leaf","name":"foo","status":"unchanged","value":"bar"},{"type":"node","name":"node","children":[{"type":"leaf","name":"array","status":"unchanged","value":[1]},{"type":"leaf","name":"str","status":"modified","valueBefore":"jkl;","valueAfter":"asdf"}]}]}]
 
 </td>
+</tr>
+
+<tr>
+<th>file1.yml</th>
+<th>file2.yml</th>
+</tr>
+
+<tr>
+<td>
+    
+    hello: world
+    obj:
+      foo: bar
+      node:
+        array:
+          - 1
+        str: jkl;
+</td>
+<td>
+
+    hello: world
+    obj:
+      foo: bar
+      node:
+        array:
+          - 1
+        str: jkl;
+</td>   
+</tr>
+
+
+<tr>
+<th>file1.ini</th>
+<th>file2.ini</th>
+</tr>
+
+<tr>
+<td>
+
+    hello=world
+
+    [obj]
+    foo=bar
+
+    [obj.node]
+    array[]=1
+    str=jkl\;
+</td>
+<td>
+
+    number=17
+
+    [obj]
+    foo=bar
+
+    [obj.node]
+    array[]=1
+    str=asdf
+</td>   
 </tr>
 </table>
 
