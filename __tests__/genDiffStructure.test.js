@@ -1,70 +1,19 @@
-import genDiff from '../src/genDiffStructure.js';
+/* eslint-disable no-underscore-dangle */
 
-test('genDiff test', () => {
-  const objBefore = {
-    name: 'vasya',
-    mail: {
-      email: 'vaziliybober@gmail.com',
-      index: 1008228,
-    },
-    dog: 'Terra',
-  };
+import { fileURLToPath } from 'url';
+import path from 'path';
+import fs from 'fs';
+import genDiffStructure from '../src/genDiffStructure.js';
 
-  const objAfter = {
-    name: {
-      firstname: 'petya',
-      secondname: 'vlasov',
-    },
-    mail: {
-      email: 'petya@mail.ru',
-      index: 1008228,
-    },
-    cat: 'Mur',
-  };
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-  const diff = [
-    {
-      name: 'cat',
-      status: 'added',
-      value: 'Mur',
-    },
+const getFixturePath = (filepath) => path.join(__dirname, '..', '__fixtures__', filepath);
 
-    {
-      name: 'dog',
-      status: 'removed',
-      value: 'Terra',
-    },
-
-    {
-      name: 'mail',
-      status: 'nested',
-      children: [
-        {
-          name: 'email',
-          status: 'modified',
-          valueBefore: 'vaziliybober@gmail.com',
-          valueAfter: 'petya@mail.ru',
-        },
-
-        {
-          name: 'index',
-          status: 'unchanged',
-          value: 1008228,
-        },
-      ],
-    },
-
-    {
-      name: 'name',
-      status: 'modified',
-      valueBefore: 'vasya',
-      valueAfter: {
-        firstname: 'petya',
-        secondname: 'vlasov',
-      },
-    },
-  ];
-
-  const actual = genDiff(objBefore, objAfter);
-  expect(actual).toEqual(diff);
+test('genDiffStructure test', () => {
+  const objBefore = JSON.parse(fs.readFileSync(getFixturePath('genDiffStructure/obj-before.json')));
+  const objAfter = JSON.parse(fs.readFileSync(getFixturePath('genDiffStructure/obj-after.json')));
+  const expected = JSON.parse(fs.readFileSync(getFixturePath('genDiffStructure/result.json')));
+  const actual = genDiffStructure(objBefore, objAfter);
+  expect(actual).toEqual(expected);
 });
