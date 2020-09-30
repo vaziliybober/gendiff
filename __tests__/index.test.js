@@ -11,34 +11,21 @@ const __dirname = path.dirname(__filename);
 const getFixturePath = (filepath) => path.join(__dirname, '..', '__fixtures__', filepath);
 
 test.each`
-  filepath1         | filepath2       | resultFilepath
-  ${'file1.json'}   | ${'file2.json'} | ${'stylish/json'}
-  ${'file1.yml'}    | ${'file2.yml'}  | ${'stylish/yaml'}
-  ${'file1.ini'}    | ${'file2.ini'}  | ${'stylish/ini'}
-`("genDiff($filepath1, $filepath2, 'stylish')", ({ filepath1, filepath2, resultFilepath }) => {
+  inputFormat | outputFormat
+  ${'json'}   | ${'stylish'}
+  ${'yml'}    | ${'stylish'}
+  ${'ini'}    | ${'stylish'}
+  ${'json'}   | ${'plain'}
+  ${'yml'}    | ${'plain'}
+  ${'ini'}    | ${'plain'}
+  ${'json'}   | ${'json'}
+  ${'yml'}    | ${'json'}
+  ${'ini'}    | ${'json'}
+`('genDiff: input format: $inputFormat, output format: $outputFormat', ({ inputFormat, outputFormat }) => {
+  const filepath1 = `file1.${inputFormat}`;
+  const filepath2 = `file2.${inputFormat}`;
+  const resultFilepath = path.join(outputFormat, inputFormat);
   const expected = fs.readFileSync(getFixturePath(resultFilepath)).toString();
-  const actual = genDiff(getFixturePath(filepath1), getFixturePath(filepath2));
+  const actual = genDiff(getFixturePath(filepath1), getFixturePath(filepath2), outputFormat);
   expect(actual).toEqual(expected);
-});
-
-test.each`
-  filepath1         | filepath2       | resultFilepath
-  ${'file1.json'}   | ${'file2.json'} | ${'plain/json'}
-  ${'file1.yml'}    | ${'file2.yml'}  | ${'plain/yaml'}
-  ${'file1.ini'}    | ${'file2.ini'}  | ${'plain/ini'}
-`("genDiff($filepath1, $filepath2, 'plain')", ({ filepath1, filepath2, resultFilepath }) => {
-  const expected = fs.readFileSync(getFixturePath(resultFilepath)).toString();
-  const actual = genDiff(getFixturePath(filepath1), getFixturePath(filepath2), 'plain');
-  expect(actual).toEqual(expected);
-});
-
-test.each`
-  filepath1         | filepath2       | resultFilepath
-  ${'file1.json'}   | ${'file2.json'} | ${'json/json'}
-  ${'file1.yml'}    | ${'file2.yml'}  | ${'json/yaml'}
-  ${'file1.ini'}    | ${'file2.ini'}  | ${'json/ini'}
-`("genDiff($filepath1, $filepath2, 'json')", ({ filepath1, filepath2, resultFilepath }) => {
-  const expected = fs.readFileSync(getFixturePath(resultFilepath)).toString();
-  const actual = genDiff(getFixturePath(filepath1), getFixturePath(filepath2), 'json');
-  expect(JSON.parse(actual)).toEqual(JSON.parse(expected));
 });
