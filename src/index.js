@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import genDiffStructure from './genDiffStructure.js';
+import genDiffStructure from './main.js';
 import format from './formatters/index.js';
 import parse from './parsers/index.js';
 
