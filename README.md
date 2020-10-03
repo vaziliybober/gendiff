@@ -140,6 +140,13 @@ In this example three pairs of files are containing the same data, but in differ
 ## Install
 
     npm install -g @vaziliybober/gendiff
+
+## Clone
+    
+    git clone https://github.com/vaziliybober/frontend-project-lvl2.git
+    cd frontend-project-lvl2/
+    make install
+    make link
     
 ## Use
 
