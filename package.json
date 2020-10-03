@@ -1,6 +1,6 @@
 {
   "name": "@vaziliybober/gendiff",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Generator of difference between two config files",
   "keywords": [
     "gendiff",
@@ -18,14 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vaziliybober/frontend-project-lvl2.git"
+    "url": "git+https://github.com/vaziliybober/gendiff.git"
   },
   "author": "Vasiliy Bobrov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/vaziliybober/frontend-project-lvl2/issues"
+    "url": "https://github.com/vaziliybober/gendiff/issues"
   },
-  "homepage": "https://github.com/vaziliybober/frontend-project-lvl2#readme",
+  "homepage": "https://github.com/vaziliybober/gendiff#readme",
   "bin": {
     "gendiff": "./bin/gendiff.js"
   },

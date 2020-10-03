@@ -1,12 +1,14 @@
 # Gendiff
 
-<a href="https://codeclimate.com/github/vaziliybober/frontend-project-lvl2/maintainability"><img src="https://api.codeclimate.com/v1/badges/79d94e87e546b97a59ef/maintainability" /></a>
-<a href="https://codeclimate.com/github/vaziliybober/frontend-project-lvl2/test_coverage"><img src="https://api.codeclimate.com/v1/badges/79d94e87e546b97a59ef/test_coverage" /></a>
-[![Continuous integration workflow](https://github.com/vaziliybober/frontend-project-lvl2/workflows/Continuous%20integration%20workflow/badge.svg)](https://github.com/vaziliybober/frontend-project-lvl2/actions)
+[![Maintainability](https://api.codeclimate.com/v1/badges/612755e24ddd3a3ccb2e/maintainability)](https://codeclimate.com/github/vaziliybober/gendiff/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/612755e24ddd3a3ccb2e/test_coverage)](https://codeclimate.com/github/vaziliybober/gendiff/test_coverage)
+[![Continuous integration workflow](https://github.com/vaziliybober/gendiff/workflows/Continuous%20integration%20workflow/badge.svg)](https://github.com/vaziliybober/gendiff/actions)
 
 Gendiff is an npm module that generates the difference between two configuration files and formats it into a string
 
 The following configuration file types are supported: json (.json), yaml (.yml), ini (.ini)
+
+This is the lvl-2 frontend project on https://ru.hexlet.io/
 
 ## Example
 
@@ -143,8 +145,8 @@ In this example three pairs of files are containing the same data, but in differ
 
 ## Clone
     
-    git clone https://github.com/vaziliybober/frontend-project-lvl2.git
-    cd frontend-project-lvl2/
+    git clone https://github.com/vaziliybober/gendiff.git
+    cd gendiff/
     make install
     make link
     
