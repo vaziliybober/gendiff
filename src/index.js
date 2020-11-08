@@ -4,6 +4,12 @@ import genDiffStructure from './main.js';
 import format from './formatters/index.js';
 import parse from './parsers/index.js';
 
+const extensionFormatMap = {
+  '.json': 'json',
+  '.yml': 'yaml',
+  '.ini': 'ini',
+};
+
 const readFile = (filepath) => {
   const fullPath = path.resolve(process.cwd(), filepath);
   const data = fs.readFileSync(fullPath).toString();
@@ -12,17 +18,7 @@ const readFile = (filepath) => {
 
 const getFileFormat = (filepath) => {
   const extension = path.extname(filepath);
-
-  switch (extension) {
-    case '.json':
-      return 'json';
-    case '.yml':
-      return 'yaml';
-    case '.ini':
-      return 'ini';
-    default:
-      throw new Error(`Extension not supported: ${extension}`);
-  }
+  return extensionFormatMap[extension];
 };
 
 const parseFile = (filepath) => {

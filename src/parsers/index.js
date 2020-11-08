@@ -1,19 +1,12 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
 
-const getParser = (formatName) => {
-  switch (formatName) {
-    case 'json':
-      return JSON.parse;
-    case 'yaml':
-      return yaml.safeLoad;
-    case 'ini':
-      return ini.parse;
-    default:
-      throw new Error(`Unknown format: ${formatName}`);
-  }
+const formatParserMap = {
+  json: JSON.parse,
+  yaml: yaml.safeLoad,
+  ini: ini.parse,
 };
 
-const parse = (data, formatName = 'json') => getParser(formatName)(data);
+const parse = (data, formatName = 'json') => formatParserMap[formatName](data);
 
 export default parse;
