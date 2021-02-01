@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import buildFormatter from './buildFormatter.js';
 
 const space = '    ';
 
@@ -7,50 +8,64 @@ const stringifyObject = (obj, depth = 0) => {
     return obj;
   }
 
-  const entryStrings = Object.keys(obj).sort().map((key) => {
-    const value = obj[key];
-    const keyString = _.isArray(obj) ? '' : `${key}: `;
-    return `${keyString}${stringifyObject(value, depth + 1)}`;
-  });
+  const entryStrings = Object.keys(obj)
+    .sort()
+    .map((key) => {
+      const value = obj[key];
+      const keyString = _.isArray(obj) ? '' : `${key}: `;
+      return `${keyString}${stringifyObject(value, depth + 1)}`;
+    });
 
   const [openBrace, closeBrace] = _.isArray(obj) ? ['[', ']'] : ['{', '}'];
-  const objWithOpenBraceOnly = [openBrace, ...entryStrings].join(`\n${space.repeat(depth + 1)}`);
-  const objWithBothBraces = `${objWithOpenBraceOnly}\n${space.repeat(depth)}${closeBrace}`;
+  const objWithOpenBraceOnly = [openBrace, ...entryStrings].join(
+    `\n${space.repeat(depth + 1)}`,
+  );
+  const objWithBothBraces = `${objWithOpenBraceOnly}\n${space.repeat(
+    depth,
+  )}${closeBrace}`;
   return objWithBothBraces;
 };
 
-const formatStylish = (diffStructure) => {
-  const iter = (currentDiffStructure, depth) => {
-    const diffStrings = currentDiffStructure.flatMap((node) => {
-      const {
-        name, status, value, valueBefore, valueAfter, children,
-      } = node;
+const stringifyValue = stringifyObject;
 
-      const buildString = (sign, valueString) => `${sign} ${name}: ${valueString}`;
+const stringifyNode = ({
+  name,
+  status,
+  stringValue,
+  stringValueBefore,
+  stringValueAfter,
+}) => {
+  const build = (sign, chosenStringValue) => `${sign} ${name}: ${chosenStringValue}`;
 
-      switch (status) {
-        case 'added':
-          return buildString('+', stringifyObject(value, depth + 1));
-        case 'removed':
-          return buildString('-', stringifyObject(value, depth + 1));
-        case 'unchanged':
-          return buildString(' ', stringifyObject(value, depth + 1));
-        case 'modified':
-          return [buildString('-', stringifyObject(valueBefore, depth + 1)), buildString('+', stringifyObject(valueAfter, depth + 1))];
-        case 'nested':
-          return buildString(' ', iter(children, depth + 1));
-        default:
-          throw new Error(`Incorrect status: ${status}`);
-      }
-    });
-
-    const diffWithOpenBraceOnly = ['{', ...diffStrings].join(`\n${`  ${space.repeat(depth)}`}`);
-    const diffWithBothBraces = `${diffWithOpenBraceOnly}\n${space.repeat(depth)}}`;
-
-    return diffWithBothBraces;
-  };
-
-  return iter(diffStructure, 0);
+  switch (status) {
+    case 'added':
+      return build('+', stringValue);
+    case 'removed':
+      return build('-', stringValue);
+    case 'unchanged':
+      return build(' ', stringValue);
+    case 'modified':
+      return [build('-', stringValueBefore), build('+', stringValueAfter)];
+    case 'nested':
+      return build(' ', stringValue);
+    default:
+      throw new Error(`Incorrect status: ${status}`);
+  }
 };
 
-export default formatStylish;
+const composeStringNodes = (stringNodes, { depth }) => {
+  const diffWithOpenBraceOnly = ['{', ...stringNodes].join(
+    `\n${`  ${space.repeat(depth)}`}`,
+  );
+  const diffWithBothBraces = `${diffWithOpenBraceOnly}\n${space.repeat(
+    depth,
+  )}}`;
+
+  return diffWithBothBraces;
+};
+
+export default buildFormatter(
+  stringifyValue,
+  stringifyNode,
+  composeStringNodes,
+);

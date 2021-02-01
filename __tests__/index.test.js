@@ -21,11 +21,18 @@ test.each`
   ${'json'}   | ${'json'}
   ${'yml'}    | ${'json'}
   ${'ini'}    | ${'json'}
-`('genDiff: input format: $inputFormat, output format: $outputFormat', ({ inputFormat, outputFormat }) => {
-  const filepath1 = `file1.${inputFormat}`;
-  const filepath2 = `file2.${inputFormat}`;
-  const resultFilepath = path.join(outputFormat, inputFormat);
-  const expected = fs.readFileSync(getFixturePath(resultFilepath)).toString();
-  const actual = genDiff(getFixturePath(filepath1), getFixturePath(filepath2), outputFormat);
-  expect(actual).toEqual(expected);
-});
+`(
+  'genDiff: input format: $inputFormat, output format: $outputFormat',
+  ({ inputFormat, outputFormat }) => {
+    const filepath1 = `file1.${inputFormat}`;
+    const filepath2 = `file2.${inputFormat}`;
+    const resultFilepath = path.join(outputFormat, inputFormat);
+    const expected = fs.readFileSync(getFixturePath(resultFilepath)).toString();
+    const actual = genDiff(
+      getFixturePath(filepath1),
+      getFixturePath(filepath2),
+      outputFormat,
+    );
+    expect(actual).toEqual(expected);
+  },
+);

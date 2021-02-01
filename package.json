@@ -14,7 +14,8 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "npx -n --experimental-vm-modules jest"
+    "test": "npx -n --experimental-vm-modules jest",
+    "ftest": "npx -n --experimental-vm-modules jest --watch"
   },
   "repository": {
     "type": "git",
