@@ -1,6 +1,6 @@
 {
   "name": "@vaziliybober/gendiff",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Generator of difference between two config files",
   "keywords": [
     "gendiff",
@@ -14,7 +14,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "npx -n --experimental-vm-modules jest"
+    "test": "npx --bail jest"
   },
   "repository": {
     "type": "git",
@@ -44,6 +44,6 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^24.0.1",
-    "jest": "^26.4.2"
+    "jest": "^26.6.3"
   }
 }
